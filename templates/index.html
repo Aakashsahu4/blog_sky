@@ -274,7 +274,7 @@
 
             profileLink.addEventListener('click', function (event) {
                 event.preventDefault();
-                // GetProfile('http://127.0.0.1:8000/api/account/get-user/');
+                // GetProfile('http://3.111.241.126/api/account/get-user/');
                 toggleProfileDetails()
             });
             let toggleProfileDetails = () => {
@@ -283,7 +283,7 @@
                     profileWrapper.style.display = 'none';
                 }
                 else {
-                    GetProfile('http://127.0.0.1:8000/api/account/get-user/');
+                    GetProfile('http://3.111.241.126/api/account/get-user/');
                     // profileWrapper.style.display = 'block';
                     // profileDetails.innerHTML = `
                     //             <p>Username: data.username}</p>
@@ -340,7 +340,7 @@
 
             NotiLink.addEventListener('click', function (event) {
                 event.preventDefault();
-                // GetNotifications('http://127.0.0.1:8000/api/blog/get-notification/');
+                // GetNotifications('http://3.111.241.126/api/blog/get-notification/');
                 toggleNotification()
             });
 
@@ -350,7 +350,7 @@
                     notificationWrapper.style.display = 'none';
                 }
                 else {
-                    GetNotifications('http://127.0.0.1:8000/api/blog/get-notification/');
+                    GetNotifications('http://3.111.241.126/api/blog/get-notification/');
                 }
             }
             window.onclick = function (event) {
@@ -388,7 +388,7 @@
             const sendMessageButton = document.getElementById('send-message');
             const chatbotInput = document.getElementById('chatbot-input');
             const chatbotMessages = document.getElementById('chatbot-messages');
-            const socket = new WebSocket('ws://127.0.0.1:8000/ws/chat/');
+            const socket = new WebSocket('ws://3.111.241.126/ws/chat/');
 
             socket.onopen = () => {
                 console.log("WebSocket connection established.");
@@ -430,7 +430,7 @@
         });
 
         function loadPosts() {
-            fetch('http://127.0.0.1:8000/api/blog/get-blog/')
+            fetch('http://3.111.241.126/api/blog/get-blog/')
                 .then(response => response.json())
                 .then(data => {
                     const postsDiv = document.getElementById('posts');
@@ -460,7 +460,7 @@
             const title = document.getElementById('title').value;
             const content = document.getElementById('content').value;
 
-            fetchWithToken('http://127.0.0.1:8000/api/blog/create-blog/', {
+            fetchWithToken('http://3.111.241.126/api/blog/create-blog/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
