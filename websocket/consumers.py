@@ -6,6 +6,7 @@ import re
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 import os
+from django.conf import settings
 
 # Ensure necessary NLTK resources are available
 nltk.download('punkt')
@@ -18,8 +19,14 @@ except LookupError:
     nltk.download('stopwords')
 
 # Load your machine learning model and vectorizer
-model_path = 'D:/Sky/blog_assignment/assignment/sentiment_model.pkl'
-vectorizer_path = 'D:/Sky/blog_assignment/assignment/vectorizer.pkl'
+
+if settings.SERVER_NAME == 'production':
+    model_path = '/home/ubuntu/blog/sentiment_model.pkl'
+    vectorizer_path = '/home/ubuntu/blog/vectorizer.pkl'
+
+else:
+    model_path = 'D:/Sky/blog_assignment/assignment/sentiment_model.pkl'
+    vectorizer_path = 'D:/Sky/blog_assignment/assignment/vectorizer.pkl'
 
 model, vectorizer = None, None
 if os.path.exists(model_path) and os.path.exists(vectorizer_path):
