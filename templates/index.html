@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +9,11 @@
         body {
             font-family: Arial, sans-serif;
             background-color: black;
-            min-height: 100vh;
             margin: 0;
             padding: 0;
             background-color: #FFDEE9;
-            background-image: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%); 
+            background-image: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%);
+            min-height: 100vh;
         }
 
         .container {
@@ -31,7 +32,8 @@
             margin-top: 20px;
         }
 
-        .post, .form-container {
+        .post,
+        .form-container {
             background: white;
             padding: 20px;
             margin-bottom: 10px;
@@ -169,20 +171,30 @@
             padding-top: 60px;
         }
 
-        .profile-content, .notification-content {
+        .profile-content,
+        .notification-content {
             background-color: #fefefe;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
         }
-        #profile-wrapper{
-            background-color: blue;
+
+        #profile-wrapper,
+        #notification-wrapper {
+            background-color: #ededed;
             padding: 20px;
             display: none;
+            position: absolute;
+            top: 60px;
+            right: 50px;
+            border: 1px solid #00000041;
+            border-radius: 20px;
+            /* box-shadow: 0 0 10px #00000088; */
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="header-left">
@@ -195,23 +207,30 @@
             <a href="#" id="logout" style="display:none;">Logout</a>
         </div>
     </header>
-    
+
     <div id="profile-wrapper">
         <div id="profile-modal" class="modal">
-        <h2>Profile Information</h2>
-        <div id="profile-details"></div>
-        <div class="profile-content">
-            </div>
+            <h2>Profile Information</h2>
+            <div id="profile-details"></div>
+            <!-- <div class="profile-content">
+            </div> -->
         </div>
     </div>
-    
 
+    <div id="notification-wrapper">
+        <div id="notification-content" class="modal">
+            <h2>Notifications</h2>
+            <div id="notification-list"></div>
+        </div>
+    </div>
+
+    <!-- 
     <div id="notification-modal" class="modal">
         <div class="notification-content">
             <h2>Notifications</h2>
             <div id="notification-list"></div>
         </div>
-    </div>
+    </div> -->
 
     <div class="container">
         <div class="form-container">
@@ -224,7 +243,7 @@
         </div>
         <div id="posts"></div>
     </div>
-    
+
     <div id="faq-chatbot">
         <button id="open-chatbot">Chat with us</button>
         <div id="chatbot-dialog" style="display: none;">
@@ -236,51 +255,79 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+
+        let token = ""
+
+        document.addEventListener('DOMContentLoaded', function () {
             loadPosts();
-            
-            document.getElementById('postForm').addEventListener('submit', function(event) {
+
+            document.getElementById('postForm').addEventListener('submit', function (event) {
                 event.preventDefault();
                 createPost();
             });
-            
+
             //Profile================================================================
             const profileLink = document.getElementById('profile');
-            const profileModal = document.getElementById('profile-modal');
+            // const profileModal = document.getElementById('profile-modal');
             const profileDetails = document.getElementById('profile-details');
             const profileWrapper = document.getElementById('profile-wrapper');
 
-            profileLink.addEventListener('click', function(event) {
+            profileLink.addEventListener('click', function (event) {
                 event.preventDefault();
-                GetProfile('http://3.111.241.126/api/account/get-user/');
+                // GetProfile('http://127.0.0.1:8000/api/account/get-user/');
+                toggleProfileDetails()
             });
+            let toggleProfileDetails = () => {
+                if (profileWrapper.style.display == "block") {
+                    // profileModal.style.display = 'block';
+                    profileWrapper.style.display = 'none';
+                }
+                else {
+                    GetProfile('http://127.0.0.1:8000/api/account/get-user/');
+                    // profileWrapper.style.display = 'block';
+                    // profileDetails.innerHTML = `
+                    //             <p>Username: data.username}</p>
+                    //             <p>Name: data.first_name}</p>
+                    //             <p>Email: data.email}</p>
+                    //         `;
+                }
+            }
+            // function toggleProfileDetails() {
 
-            window.onclick = function(event) {
+            // }
+
+            window.onclick = function (event) {
                 if (event.target == profileModal) {
                     profileModal.style.display = 'none';
                 }
             };
 
             function GetProfile(url) {
-                    fetchWithToken(url, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    })
+                fetchWithToken(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
                     .then(response => response.json())
                     .then(data => {
-                        profileModal.style.display = 'block';
+                        // profileModal.style.display = 'block';
+                        // profileWrapper.style.display = 'block';
+                        // profileDetails.innerHTML = `
+                        //     <p>Username: ${data.username}</p>
+                        //     <p>Name: ${data.first_name}</p>
+                        //     <p>Email: ${data.email}</p>
+                        // `;
                         profileWrapper.style.display = 'block';
                         profileDetails.innerHTML = `
-                            <p>Username: ${data.username}</p>
-                            <p>Name: ${data.first_name}</p>
-                            <p>Email: ${data.email}</p>
-                        `;
+                                <p>Username: ${data.username}</p>
+                                <p>Name: ${data.first_name}</p>
+                                <p>Email: ${data.email}</p>
+                            `;
                     })
                     .catch(error => console.error('Error:', error));
-                }
-            
+            }
+
 
             //Notification================================================================
 
@@ -288,28 +335,41 @@
             const notificationModal = document.getElementById('notification-modal');
             const notificationContent = document.getElementById('notification-list');
 
-            NotiLink.addEventListener('click', function(event) {
+            const notificationWrapper = document.getElementById('notification-wrapper');
+
+
+            NotiLink.addEventListener('click', function (event) {
                 event.preventDefault();
-                GetNotifications('http://3.111.241.126/api/blog/get-notification/');
+                // GetNotifications('http://127.0.0.1:8000/api/blog/get-notification/');
+                toggleNotification()
             });
 
-            window.onclick = function(event) {
-                if (event.target == notificationModal) {
-                    notificationModal.style.display = 'none';
+            let toggleNotification = () => {
+                if (notificationWrapper.style.display == "block") {
+                    // profileModal.style.display = 'block';
+                    notificationWrapper.style.display = 'none';
+                }
+                else {
+                    GetNotifications('http://127.0.0.1:8000/api/blog/get-notification/');
+                }
+            }
+            window.onclick = function (event) {
+                if (event.target == notificationWrapper) {
+                    notificationWrapper.style.display = 'none';
                 }
             };
 
 
             function GetNotifications(url) {
-                    fetchWithToken(url, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    })
+                fetchWithToken(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
                     .then(response => response.json())
                     .then(data => {
-                        notificationModal.style.display = 'block';
+                        notificationWrapper.style.display = 'block';
                         notificationContent.innerHTML = '';
                         data.forEach(notification => {
                             const notificationElement = document.createElement('div');
@@ -319,7 +379,7 @@
                         });
                     })
                     .catch(error => console.error('Error:', error));
-                }
+            }
 
 
             //Chat Bot===============================================================
@@ -328,13 +388,13 @@
             const sendMessageButton = document.getElementById('send-message');
             const chatbotInput = document.getElementById('chatbot-input');
             const chatbotMessages = document.getElementById('chatbot-messages');
-            const socket = new WebSocket('ws://3.111.241.126/ws/chat/');
+            const socket = new WebSocket('ws://127.0.0.1:8000/ws/chat/');
 
             socket.onopen = () => {
                 console.log("WebSocket connection established.");
             };
 
-            socket.onmessage = function(event) {
+            socket.onmessage = function (event) {
                 const data = JSON.parse(event.data);
                 const message = document.createElement('div');
                 message.textContent = `Bot: ${data.message}`;
@@ -342,11 +402,11 @@
                 chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
             };
 
-            openChatbotButton.addEventListener('click', function() {
+            openChatbotButton.addEventListener('click', function () {
                 chatbotDialog.style.display = 'block';
             });
 
-            sendMessageButton.addEventListener('click', function() {
+            sendMessageButton.addEventListener('click', function () {
                 const message = chatbotInput.value;
                 if (message.trim() !== '') {
                     const userMessage = document.createElement('div');
@@ -362,7 +422,7 @@
                 }
             });
 
-            document.addEventListener('click', function(event) {
+            document.addEventListener('click', function (event) {
                 if (!chatbotDialog.contains(event.target) && !openChatbotButton.contains(event.target)) {
                     chatbotDialog.style.display = 'none';
                 }
@@ -370,7 +430,7 @@
         });
 
         function loadPosts() {
-            fetch('http://3.111.241.126/api/blog/get-blog/')
+            fetch('http://127.0.0.1:8000/api/blog/get-blog/')
                 .then(response => response.json())
                 .then(data => {
                     const postsDiv = document.getElementById('posts');
@@ -400,21 +460,22 @@
             const title = document.getElementById('title').value;
             const content = document.getElementById('content').value;
 
-            fetchWithToken('http://3.111.241.126/api/blog/create-blog/', {
+            fetchWithToken('http://127.0.0.1:8000/api/blog/create-blog/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ title: title, content: content }),
             })
-            .then(response => response.json())
-            .then(data => {
-                loadPosts();
-                document.getElementById('postForm').reset();
-            });
+                .then(response => response.json())
+                .then(data => {
+                    loadPosts();
+                    document.getElementById('postForm').reset();
+                });
         }
 
-        
+
     </script>
 </body>
+
 </html>
