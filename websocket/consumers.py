@@ -20,13 +20,13 @@ except LookupError:
 
 # Load your machine learning model and vectorizer
 
-if settings.SERVER_NAME == 'production':
-    model_path = '/home/ubuntu/blog/sentiment_model.pkl'
-    vectorizer_path = '/home/ubuntu/blog/vectorizer.pkl'
+# if settings.SERVER_NAME == 'production':
+model_path = '/home/ubuntu/blog/sentiment_model.pkl'
+vectorizer_path = '/home/ubuntu/blog/vectorizer.pkl'
 
-else:
-    model_path = 'D:/Sky/blog_assignment/assignment/sentiment_model.pkl'
-    vectorizer_path = 'D:/Sky/blog_assignment/assignment/vectorizer.pkl'
+# else:
+    # model_path = 'D:/Sky/blog_assignment/assignment/sentiment_model.pkl'
+    # vectorizer_path = 'D:/Sky/blog_assignment/assignment/vectorizer.pkl'
 
 model, vectorizer = None, None
 if os.path.exists(model_path) and os.path.exists(vectorizer_path):
