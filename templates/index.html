@@ -8,6 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             background-color: black;
+            min-height: 100vh;
             margin: 0;
             padding: 0;
             background-color: #FFDEE9;
@@ -251,7 +252,7 @@
 
             profileLink.addEventListener('click', function(event) {
                 event.preventDefault();
-                GetProfile('http://http://3.111.241.126/api/account/get-user/');
+                GetProfile('http://3.111.241.126/api/account/get-user/');
             });
 
             window.onclick = function(event) {
@@ -289,7 +290,7 @@
 
             NotiLink.addEventListener('click', function(event) {
                 event.preventDefault();
-                GetNotifications('http://http://3.111.241.126/api/blog/get-notification/');
+                GetNotifications('http://3.111.241.126/api/blog/get-notification/');
             });
 
             window.onclick = function(event) {
@@ -327,7 +328,7 @@
             const sendMessageButton = document.getElementById('send-message');
             const chatbotInput = document.getElementById('chatbot-input');
             const chatbotMessages = document.getElementById('chatbot-messages');
-            const socket = new WebSocket('ws://127.0.0.1:8000/ws/chat/');
+            const socket = new WebSocket('ws://3.111.241.126/ws/chat/');
 
             socket.onopen = () => {
                 console.log("WebSocket connection established.");
@@ -369,7 +370,7 @@
         });
 
         function loadPosts() {
-            fetch('http://http://3.111.241.126/api/blog/get-blog/')
+            fetch('http://3.111.241.126/api/blog/get-blog/')
                 .then(response => response.json())
                 .then(data => {
                     const postsDiv = document.getElementById('posts');
@@ -384,7 +385,8 @@
         }
 
         function fetchWithToken(url, options = {}) {
-            const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIzNTY3NTYzLCJpYXQiOjE3MjIyNzE1NjMsImp0aSI6ImY2MjNlMGMyZWI4NTQxYmNhMDc1MjM5ZmI4NTMxOTRmIiwidXNlcl9pZCI6MX0.XtbxZ4dRVYXs6sFpu0k0hCVKrJa-X5oI2uDPP3uZvek';
+            console.log(window.sessionStorage.getItem("token"))
+            let token = window.sessionStorage.getItem("token");
             if (token) {
                 options.headers = {
                     ...options.headers,
@@ -398,7 +400,7 @@
             const title = document.getElementById('title').value;
             const content = document.getElementById('content').value;
 
-            fetchWithToken('http://http://3.111.241.126/api/blog/create-blog/', {
+            fetchWithToken('http://3.111.241.126/api/blog/create-blog/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

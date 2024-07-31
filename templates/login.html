@@ -1,0 +1,119 @@
+<h<!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Blog Website</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                min-height: 100vh;
+                background-color: #FFDEE9;
+                background-image: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%);
+                display: grid;
+                place-items: center;
+            }
+
+            .login-card {
+                background-color: #fff;
+                border-radius: 10px;
+                border: 1px solid #00000047;
+                padding: 20px 30px;
+                min-width: 300px;
+            }
+
+            .login-card-text {
+                font-size: 20px;
+                font-weight: 700;
+            }
+
+            #usernameField,
+            #passwordField {
+                width: 100%;
+                padding: 5px 10px;
+                margin-top: 5px;
+            }
+
+            .field-wrapper {
+                margin: 20px 0;
+            }
+
+            .login-btn-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .login-btn {
+                margin-top: 20px;
+                padding: 10px 20px 15px 20px;
+                border-radius: 30px;
+                outline: none;
+                border: 1px solid #333;
+                background-color: #333;
+                color: #fff;
+                font-weight: 700;
+                transition: 500ms ease all;
+            }
+
+            .login-btn:hover {
+                background-color: #fff;
+                border: 1px solid #333;
+                color: #333;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="login-card">
+            <div class="login-card-text">
+                Login
+            </div>
+            <form id="loginForm">
+                <div class="field-wrapper">
+                    <label for="username">Username</label><br />
+                    <input type="text" id="usernameField" name="username" placeholder="Enter username" required>
+                </div>
+                <div>
+                    <label for="password">Password</label><br />
+                    <input type="password" id="passwordField" name="password" placeholder="Enter password" required>
+                </div>
+                <div class="login-btn-wrapper">
+                    <button type="submit" class="login-btn">Login</button>
+                </div>
+            </form>
+        </div>
+
+        <script>
+            document.getElementById('loginForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                login();
+            });
+            
+            function login() {
+                const username = document.getElementById('usernameField').value;
+                const password = document.getElementById('passwordField').value;
+
+                fetch('http://3.111.241.126/api/account/user-login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username: username, password: password }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+						console.log(data)
+						sessionStorage.setItem("token", data.token.access)
+                        window.location.assign("http://3.111.241.126/api/account/index");
+                        document.getElementById('loginForm').reset();
+                    });
+            }
+        </script>
+
+    </body>
+
+    </html>

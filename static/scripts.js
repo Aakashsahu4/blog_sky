@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadPosts() {
-    fetch('http://127.0.0.1:8000/api/posts/')
+    fetch('http://3.111.241.126/api/posts/')
         .then(response => response.json())
         .then(data => {
             const postsDiv = document.getElementById('posts');
@@ -26,7 +26,7 @@ function createPost() {
     const title = document.getElementById('title').value;
     const content = document.getElementById('content').value;
 
-    fetch('http://127.0.0.1:8000/api/posts/', {
+    fetch('http://3.111.241.126/api/posts/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
