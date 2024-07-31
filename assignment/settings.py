@@ -165,13 +165,31 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer', ''),
 }
 
-STATIC_URL = "/static/"
-
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-MEDIA_URL = "made_with_love_by_sky/media/"
-
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+
+
+if SERVER_NAME == 'production':
+
+    AWS_DEFAULT_ACL = config('BLOG_AWS_DEFAULT_ACL')
+    AWS_S3_REGION_NAME= config('BLOG_AWS_S3_REGION_NAME')
+    AWS_STORAGE_BUCKET_NAME= config('BLOG_AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_ENDPOINT_URL= config('BLOG_AWS_S3_ENDPOINT_URL')
+    AWS_S3_CUSTOM_DOMAIN= config('BLOG_AWS_S3_CUSTOM_DOMAIN')
+    AWS_STATIC_LOCATION = 'static/'
+    AWS_MEDIA_LOCATION = 'media/'
+    STATIC_URL = f'http://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/'
+    MEDIA_URL = f'http://{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/'
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+
+
+else:
+    STATIC_URL = "/static/"
+    MEDIA_URL = "made_with_love_by_sky/media/"
+
 
 TEMPLATES = [
     {

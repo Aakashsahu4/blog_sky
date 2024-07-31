@@ -251,7 +251,7 @@
 
             profileLink.addEventListener('click', function(event) {
                 event.preventDefault();
-                GetProfile('http://3.111.241.126/api/account/get-user/');
+                GetProfile('http://http://3.111.241.126/api/account/get-user/');
             });
 
             window.onclick = function(event) {
@@ -289,7 +289,7 @@
 
             NotiLink.addEventListener('click', function(event) {
                 event.preventDefault();
-                GetNotifications('http://3.111.241.126/api/blog/get-notification/');
+                GetNotifications('http://http://3.111.241.126/api/blog/get-notification/');
             });
 
             window.onclick = function(event) {
@@ -369,7 +369,7 @@
         });
 
         function loadPosts() {
-            fetch('http://3.111.241.126/api/blog/get-blog/')
+            fetch('http://http://3.111.241.126/api/blog/get-blog/')
                 .then(response => response.json())
                 .then(data => {
                     const postsDiv = document.getElementById('posts');
@@ -398,7 +398,7 @@
             const title = document.getElementById('title').value;
             const content = document.getElementById('content').value;
 
-            fetchWithToken('http://3.111.241.126/api/blog/create-blog/', {
+            fetchWithToken('http://http://3.111.241.126/api/blog/create-blog/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
